@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* Variables y fuentes */
+:root {
+  --color-primario: #1A2238;
+  --color-secundario: #304C89;
+  --color-terciario: #E2E5CC;
+  --color-cuarto: #F2F2F2;
+  --color-quinto: #FFD447;
+  --color-sexto: #E63946;
+  --color-septimo: #A8D5BA;
+
+  --font-poppins: 'Poppins', sans-serif;
+  --font-nunito: 'Nunito', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins);
+}
+
+p {
+  font-family: var(--font-nunito);
+}
+
+/* Colores de texto */
+.primario { color: var(--color-primario); }
+.secundario { color: var(--color-secundario); }
+.terciario { color: var(--color-terciario); }
+.cuarto { color: var(--color-cuarto); }
+.quinto { color: var(--color-quinto); }
+.sexto { color: var(--color-sexto); }
+.septimo { color: var(--color-septimo); }
+
+/* Colores de fondo */
+.bg-primario { background-color: var(--color-primario); }
+.bg-secundario { background-color: var(--color-secundario); }
+.bg-terciario { background-color: var(--color-terciario); }
+.bg-cuarto { background-color: var(--color-cuarto); }
+.bg-quinto { background-color: var(--color-quinto); }
+.bg-sexto { background-color: var(--color-sexto); }
+.bg-septimo { background-color: var(--color-septimo); }
+
+/* Layout para footer y navbar */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-nunito);
+  display: flex;
+  flex-direction: column;
+}
+
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px; /* ajusta según necesites */
+  background-color: var(--color-primario);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px; /* ajusta según necesites */
+  background-color: var(--color-secundario);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#content {
+  /* Para que el contenido no quede tapado por navbar ni footer */
+  flex: 1;
+  margin-top: 60px;  /* igual que la altura del navbar */
+  margin-bottom: 50px; /* igual que la altura del footer */
+  padding: 20px;
+}
