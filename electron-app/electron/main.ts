@@ -1,23 +1,27 @@
-const { app, BrowserWindow, Menu } = require('electron')
+import { app, BrowserWindow, Menu } from 'electron'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-function createWindow () {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      preload: __dirname + '/preload.js', // más adelante lo cambiamos a .ts compilado
+      contextIsolation: true,
+      nodeIntegration: false
     }
   })
 
   win.loadURL('http://localhost:5173')
 
-  const template = [
+  const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: 'Archivo',
-      submenu: [
-        { role: 'quit', label: 'Salir' }
-      ]
+      submenu: [{ role: 'quit', label: 'Salir' }]
     },
     {
       label: 'Editar',
@@ -34,7 +38,7 @@ function createWindow () {
       label: 'Ver',
       submenu: [
         { role: 'reload', label: 'Recargar' },
-        { role: 'toggledevtools', label: 'Herramientas de desarrollo' },
+        { role: 'toggleDevTools', label: 'Herramientas de desarrollo' },
         { type: 'separator' },
         { role: 'resetZoom', label: 'Restablecer zoom' },
         { role: 'zoomIn', label: 'Acercar' },
