@@ -5,8 +5,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 function createWindow() {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1366,
+        height: 768,
         webPreferences: {
             preload: __dirname + '/preload.js', // más adelante lo cambiamos a .ts compilado
             contextIsolation: true,
