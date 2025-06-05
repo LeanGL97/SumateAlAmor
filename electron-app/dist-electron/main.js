@@ -1,19 +1,22 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import { dirname, join } from 'path';
+import { bootstrapBackend } from './domains/index.js'; // inicializador de backend
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-function createWindow() {
-    const win = new BrowserWindow({
+
+let mainWindow = null;
+async function createWindow() {
+    mainWindow = new BrowserWindow({
         width: 1366,
-        height: 768,
+
         webPreferences: {
-            preload: __dirname + '/preload.js', // más adelante lo cambiamos a .ts compilado
+            preload: join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false
         }
     });
-    win.loadURL('http://localhost:5173');
+    mainWindow.loadURL('http://localhost:5173');
     const template = [
         {
             label: 'Archivo',
@@ -46,6 +49,8 @@ function createWindow() {
     ];
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
+    // ⬇️ Inicializa el backend (tu "Nest-like")
+    await bootstrapBackend(ipcMain);
 }
 app.whenReady().then(createWindow);
 //# sourceMappingURL=main.js.map
