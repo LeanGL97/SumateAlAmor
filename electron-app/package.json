@@ -2,30 +2,25 @@
   "name": "electron-app",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite --config src/vite.config.ts\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron ./dist-electron/main.cjs\"",
-    "build": "vite build --config src/vite.config.ts && npm run build:electron",
+    "dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron ./dist-electron/main.js\"",
+    "build": "vite build && tsc -p tsconfig.electron.json && cp electron/preload.js dist-electron/",
     "start": "electron .",
-    "build:electron": "del dist-electron\\main.cjs dist-electron\\preload.cjs 2>nul && tsc -p tsconfig.electron.json && ren dist-electron\\main.js main.cjs && ren dist-electron\\preload.js preload.cjs",
-    "start:electron": "npm run build:electron && electron dist-electron/main.cjs"
+    "build:electron": "tsc -p tsconfig.electron.json",
+    "start:electron": "npm run build:electron && electron dist-electron/main.js"
   },
   "main": "electron/main.ts",
   "dependencies": {
     "@tailwindcss/vite": "^4.1.8",
-    "@types/react-router-dom": "^5.3.3",
-    "lucide-react": "^0.513.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.6.2",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7",
     "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
-    "@types/sqlite3": "^3.1.11",
     "@vitejs/plugin-react": "^4.4.1",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",

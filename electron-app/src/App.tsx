@@ -1,33 +1,17 @@
 import { useState } from 'react'
 import './index.css' // Asegurate que importás el CSS donde está tailwind (index.css, no App.css)
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Footer from './components/Footer'
-import Home from './pages/Home'
-import Navbar from './components/Navbar'
-import Alumnos from './pages/Alumnos'
-import Pacientes from './pages/Pacientes'
-import GastosYProductos from './pages/GastosYProductos'
-import AdminDashboard from './pages/AdminDashboard'
-import PruebasBack from './pages/PruebasBack'
 
 function App() {
+  const [count, setCount] = useState(0)
+
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow bg-terciario">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/alumnos" element={<Alumnos />} />
-            <Route path="/pacientes" element={<Pacientes />} />
-            <Route path="/gyp" element={<GastosYProductos />} />
-            <Route path="/adminDashboard" element={<AdminDashboard />} />
-            <Route path="/pruebas-back" element={<PruebasBack />} />
-          </Routes>
-        </main>
-        <Footer />
+    <>
+      <div className="h-screen bg-terciario flex flex-col gap-4 justify-center items-center">
+        <h1 className="text-white text-3xl font-bold ">Sumate al Amor</h1>
+        <h1 className="primario">Título con Poppins y color primario</h1>
+        <p className="secundario">Texto con Nunito y color secundario</p>
       </div>
-    </Router>
+    </>
   )
 }
 
