@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { MouseEvent } from 'react'
 
 interface ButtonProps {
     children: React.ReactNode
-    onClick?: () => void
+    onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
     type?: 'button' | 'submit' | 'reset'
-    variant?: 'primary' | 'secondary' | 'danger' | 'light'
+    variant?: 'primary' | 'secondary' | 'danger' | 'light' | 'yellow'
     className?: string
     disabled?: boolean
 }
@@ -14,6 +14,7 @@ const variantStyles: Record<string, string> = {
     secondary: 'bg-secundario text-white hover:bg-opacity-90',
     danger: 'bg-sexto text-white hover:bg-opacity-90',
     light: 'bg-cuarto text-primario hover:bg-opacity-90',
+    yellow: 'bg-gradient-to-b from-[#FFD447] to-amber-400 text-primario hover:from-amber-300 hover:to-[#FFD447]',
 }
 
 const Button: React.FC<ButtonProps> = ({
