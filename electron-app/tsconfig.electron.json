@@ -2,15 +2,16 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist-electron",
-    "module": "ESNext",
-    "target": "ES2020",
-    "moduleResolution": "Node",
     "types": ["node", "electron"],
-    "esModuleInterop": true,
     "resolveJsonModule": true,
-    "strict": true,
     "sourceMap": true,
-    "baseUrl": "./electron"
+    "baseUrl": "./electron",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
-  "include": ["electron/**/*.ts"]
+  "include": ["electron/**/*.ts"],
+  "exclude": ["node_modules"]
 }
