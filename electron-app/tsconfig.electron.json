@@ -5,7 +5,13 @@
     "types": ["node", "electron"],
     "resolveJsonModule": true,
     "sourceMap": true,
-    "baseUrl": "./electron"
+    "baseUrl": "./electron",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
-  "include": ["electron/**/*.ts"]
+  "include": ["electron/**/*.ts"],
+  "exclude": ["node_modules"]
 }

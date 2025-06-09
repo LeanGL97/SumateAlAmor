@@ -8,6 +8,7 @@ import Alumnos from './pages/Alumnos'
 import Pacientes from './pages/Pacientes'
 import GastosYProductos from './pages/GastosYProductos'
 import AdminDashboard from './pages/AdminDashboard'
+import PruebasBack from './pages/PruebasBack'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/pacientes" element={<Pacientes />} />
             <Route path="/gyp" element={<GastosYProductos />} />
             <Route path="/adminDashboard" element={<AdminDashboard />} />
+            <Route path="/pruebas-back" element={<PruebasBack />} />
           </Routes>
         </main>
         <Footer />

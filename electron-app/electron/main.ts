@@ -1,62 +1,68 @@
 import { app, BrowserWindow, Menu, ipcMain } from 'electron'
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import { bootstrapBackend } from './domains/index.js'; // inicializador de backend
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import * as path from 'path';
+import { bootstrapBackend } from './domains/index.js';
+import { initializeDatabase } from './db/database.js';
 
 let mainWindow: BrowserWindow | null = null;
 
 async function createWindow() {
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: join(__dirname, 'preload.js'),
-      contextIsolation: true,
-      nodeIntegration: false
-    }
-  })
+  try {
+    // Inicializar la base de datos primero
+    await initializeDatabase();
+    console.log('Base de datos inicializada correctamente');
 
-  mainWindow.loadURL('http://localhost:5173')
+    mainWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      webPreferences: {
+        preload: path.join(__dirname, 'preload.cjs'),
+        contextIsolation: true,
+        nodeIntegration: false
+      }
+    })
 
-  const template: Electron.MenuItemConstructorOptions[] = [
-    {
-      label: 'Archivo',
-      submenu: [{ role: 'quit', label: 'Salir' }]
-    },
-    {
-      label: 'Editar',
-      submenu: [
-        { role: 'undo', label: 'Deshacer' },
-        { role: 'redo', label: 'Rehacer' },
-        { type: 'separator' },
-        { role: 'cut', label: 'Cortar' },
-        { role: 'copy', label: 'Copiar' },
-        { role: 'paste', label: 'Pegar' }
-      ]
-    },
-    {
-      label: 'Ver',
-      submenu: [
-        { role: 'reload', label: 'Recargar' },
-        { role: 'toggleDevTools', label: 'Herramientas de desarrollo' },
-        { type: 'separator' },
-        { role: 'resetZoom', label: 'Restablecer zoom' },
-        { role: 'zoomIn', label: 'Acercar' },
-        { role: 'zoomOut', label: 'Alejar' },
-        { type: 'separator' },
-        { role: 'togglefullscreen', label: 'Pantalla completa' }
-      ]
-    }
-  ]
+    mainWindow.loadURL('http://localhost:5173')
 
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
+    const template: Electron.MenuItemConstructorOptions[] = [
+      {
+        label: 'Archivo',
+        submenu: [{ role: 'quit', label: 'Salir' }]
+      },
+      {
+        label: 'Editar',
+        submenu: [
+          { role: 'undo', label: 'Deshacer' },
+          { role: 'redo', label: 'Rehacer' },
+          { type: 'separator' },
+          { role: 'cut', label: 'Cortar' },
+          { role: 'copy', label: 'Copiar' },
+          { role: 'paste', label: 'Pegar' }
+        ]
+      },
+      {
+        label: 'Ver',
+        submenu: [
+          { role: 'reload', label: 'Recargar' },
+          { role: 'toggleDevTools', label: 'Herramientas de desarrollo' },
+          { type: 'separator' },
+          { role: 'resetZoom', label: 'Restablecer zoom' },
+          { role: 'zoomIn', label: 'Acercar' },
+          { role: 'zoomOut', label: 'Alejar' },
+          { type: 'separator' },
+          { role: 'togglefullscreen', label: 'Pantalla completa' }
+        ]
+      }
+    ]
 
-  // ⬇️ Inicializa el backend (tu "Nest-like")
-  await bootstrapBackend(ipcMain);
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+
+    // ⬇️ Inicializa el backend (tu "Nest-like")
+    await bootstrapBackend(ipcMain);
+  } catch (error) {
+    console.error('Error al inicializar la aplicación:', error);
+    app.quit();
+  }
 }
 
 app.whenReady().then(createWindow)

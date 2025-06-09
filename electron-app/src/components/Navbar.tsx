@@ -20,6 +20,7 @@ const Navbar = () => {
                         <Link to="/alumnos" className="hover:text-cuarto">Alumnos</Link>
                         <Link to="/pacientes" className="hover:text-cuarto">Pacientes</Link>
                         <Link to="/gyp" className="hover:text-cuarto">Gastos y Productos</Link>
+                        <Link to="/pruebas-back" className="hover:text-cuarto">Pruebas Backend</Link>
 
                         {/* Solo si es admin */}
                         {role === "administrador" && (
