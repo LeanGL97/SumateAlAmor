@@ -10,10 +10,10 @@ const Navbar = () => {
 
     return (
         <nav>
-            <div className="bg-quinto px-2">
-                <div className="flex justify-between mx-auto items-center w-full">
+            <div className="px-2 bg-quinto">
+                <div className="flex items-center justify-between w-full mx-auto">
                     <div>
-                        <img src="/logo1.png" alt="Logo" className="w-28 rounded-md" />
+                        <img src="/logo1.png" alt="Logo" className="rounded-md w-28" />
                     </div>
                     <div className="flex items-center mx-auto gap-32 text-lg font-bold">
                         <Link to="/" className="hover:text-cuarto">Inicio</Link>
@@ -21,10 +21,15 @@ const Navbar = () => {
                         <Link to="/pacientes" className="hover:text-cuarto">Pacientes</Link>
                         <Link to="/gyp" className="hover:text-cuarto">Gastos y Productos</Link>
                         <Link to="/pruebas-back" className="hover:text-cuarto">Pruebas Backend</Link>
+                    <div className="flex items-center gap-32 mx-auto text-lg font-bold">
+                        <Link to="/home" className="hover:text-secundario">Inicio</Link>
+                        <Link to="/alumnos" className="hover:text-secundario">Alumnos</Link>
+                        <Link to="/pacientes" className="hover:text-secundario">Pacientes</Link>
+                        <Link to="/gyp" className="hover:text-secundario">Gastos y Productos</Link>
 
                         {/* Solo si es admin */}
                         {role === "administrador" && (
-                            <Link to="/adminDashboard" className="hover:text-cuarto">
+                            <Link to="/adminDashboard" className="hover:text-secundario">
                                 Mi Perfil
                             </Link>
                         )}

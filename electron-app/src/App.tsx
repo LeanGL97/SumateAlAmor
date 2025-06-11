@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import './index.css' // Asegurate que importás el CSS donde está tailwind (index.css, no App.css)
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Footer from './components/Footer'
@@ -8,6 +7,8 @@ import Alumnos from './pages/Alumnos'
 import Pacientes from './pages/Pacientes'
 import GastosYProductos from './pages/GastosYProductos'
 import AdminDashboard from './pages/AdminDashboard'
+import Landing from './pages/Landing'
+import { Toaster } from 'sonner'
 import PruebasBack from './pages/PruebasBack'
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
         <Navbar />
         <main className="flex-grow bg-terciario">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/alumnos" element={<Alumnos />} />
             <Route path="/pacientes" element={<Pacientes />} />
             <Route path="/gyp" element={<GastosYProductos />} />
@@ -26,6 +28,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
+        <Toaster position='top-right' richColors />
       </div>
     </Router>
   )
