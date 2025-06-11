@@ -15,17 +15,12 @@ const Navbar = () => {
                     <div>
                         <img src="/logo1.png" alt="Logo" className="rounded-md w-28" />
                     </div>
-                    <div className="flex items-center mx-auto gap-32 text-lg font-bold">
-                        <Link to="/" className="hover:text-cuarto">Inicio</Link>
-                        <Link to="/alumnos" className="hover:text-cuarto">Alumnos</Link>
-                        <Link to="/pacientes" className="hover:text-cuarto">Pacientes</Link>
-                        <Link to="/gyp" className="hover:text-cuarto">Gastos y Productos</Link>
-                        <Link to="/pruebas-back" className="hover:text-cuarto">Pruebas Backend</Link>
                     <div className="flex items-center gap-32 mx-auto text-lg font-bold">
                         <Link to="/home" className="hover:text-secundario">Inicio</Link>
                         <Link to="/alumnos" className="hover:text-secundario">Alumnos</Link>
                         <Link to="/pacientes" className="hover:text-secundario">Pacientes</Link>
                         <Link to="/gyp" className="hover:text-secundario">Gastos y Productos</Link>
+                        <Link to="/pruebas-back" className="hover:text-secundario">Pruebas Backend</Link>
 
                         {/* Solo si es admin */}
                         {role === "administrador" && (
