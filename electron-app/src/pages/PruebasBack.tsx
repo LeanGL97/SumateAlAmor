@@ -13,9 +13,42 @@ interface EndpointResponse {
   error: string | null;
 }
 
+interface LoginData {
+  usuario: string;
+  password: string;
+}
+
+interface SignupData {
+  nombre: string;
+  correo?: string;
+  usuario: string;
+  direccion: string;
+  telefono: string;
+  password: string;
+  rol: 'Administrador' | 'ServicioSocial' | 'Albergue';
+  confirmPassword: string;
+}
+
 const PruebasBack = () => {
   const [responses, setResponses] = useState<EndpointResponse[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  
+  // Auth form states
+  const [loginData, setLoginData] = useState<LoginData>({
+    usuario: '',
+    password: ''
+  });
+  
+  const [signupData, setSignupData] = useState<SignupData>({
+    nombre: '',
+    correo: '',
+    usuario: '',
+    direccion: '',
+    telefono: '',
+    password: '',
+    rol: 'Administrador',
+    confirmPassword: ''
+  });
 
   const handleEndpointCall = async (endpoint: string) => {
     setIsLoading(true);
@@ -55,6 +88,80 @@ const PruebasBack = () => {
     }
   };
 
+  const handleLogin = async () => {
+    setIsLoading(true);
+    try {
+      if (!window.api?.login) {
+        setResponses(prev => [...prev, {
+          endpoint: 'auth:login',
+          timestamp: new Date().toISOString(),
+          data: null,
+          error: 'Endpoint de login no disponible'
+        }]);
+        return;
+      }
+
+      const data = await window.api.login(loginData);
+      console.log('Respuesta de login:', data);
+      
+      setResponses(prev => [...prev, {
+        endpoint: 'auth:login',
+        timestamp: new Date().toISOString(),
+        data,
+        error: null
+      }]);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+      console.error('Error en login:', errorMessage);
+      
+      setResponses(prev => [...prev, {
+        endpoint: 'auth:login',
+        timestamp: new Date().toISOString(),
+        data: null,
+        error: errorMessage
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSignup = async () => {
+    setIsLoading(true);
+    try {
+      if (!window.api?.signup) {
+        setResponses(prev => [...prev, {
+          endpoint: 'auth:signup',
+          timestamp: new Date().toISOString(),
+          data: null,
+          error: 'Endpoint de signup no disponible'
+        }]);
+        return;
+      }
+
+      const data = await window.api.signup(signupData);
+      console.log('Respuesta de signup:', data);
+      
+      setResponses(prev => [...prev, {
+        endpoint: 'auth:signup',
+        timestamp: new Date().toISOString(),
+        data,
+        error: null
+      }]);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+      console.error('Error en signup:', errorMessage);
+      
+      setResponses(prev => [...prev, {
+        endpoint: 'auth:signup',
+        timestamp: new Date().toISOString(),
+        data: null,
+        error: errorMessage
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const formatResponse = (response: EndpointResponse) => {
     if (response.error) {
       return (
@@ -76,6 +183,26 @@ const PruebasBack = () => {
               </li>
             ))}
           </ul>
+        </div>
+      );
+    }
+
+    if (response.endpoint === 'auth:login' || response.endpoint === 'auth:signup') {
+      const authResponse = response.data;
+      return (
+        <div className="space-y-2">
+          <div className={`font-semibold ${authResponse.success ? 'text-green-600' : 'text-red-600'}`}>
+            {authResponse.success ? '✅ Éxito' : '❌ Error'}
+          </div>
+          <div className="text-gray-700">{authResponse.message}</div>
+          {authResponse.user && (
+            <div className="bg-gray-50 p-3 rounded">
+              <h4 className="font-medium">Usuario:</h4>
+              <pre className="text-sm mt-1">
+                {JSON.stringify(authResponse.user, null, 2)}
+              </pre>
+            </div>
+          )}
         </div>
       );
     }
@@ -110,7 +237,169 @@ const PruebasBack = () => {
             </button>
             <span className="text-sm text-gray-600">GET /usuarios</span>
           </div>
-          {/* Aquí se pueden agregar más endpoints en el futuro */}
+        </div>
+      </div>
+
+      {/* Panel de Autenticación */}
+      <div className="bg-white shadow-md rounded-lg p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-4">Autenticación</h2>
+        
+        {/* Login Form */}
+        <div className="mb-6 p-4 border rounded-lg">
+          <h3 className="text-lg font-medium mb-3">Login</h3>
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Usuario
+              </label>
+              <input
+                type="text"
+                value={loginData.usuario}
+                onChange={(e) => setLoginData({...loginData, usuario: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ingrese usuario"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Contraseña
+              </label>
+              <input
+                type="password"
+                value={loginData.password}
+                onChange={(e) => setLoginData({...loginData, password: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ingrese contraseña"
+              />
+            </div>
+          </div>
+          <button
+            onClick={handleLogin}
+            disabled={isLoading}
+            className={`px-4 py-2 rounded ${
+              isLoading 
+                ? 'bg-gray-300 cursor-not-allowed' 
+                : 'bg-green-500 hover:bg-green-600 text-white'
+            }`}
+          >
+            {isLoading ? 'Procesando...' : 'Iniciar Sesión'}
+          </button>
+        </div>
+
+        {/* Signup Form */}
+        <div className="p-4 border rounded-lg">
+          <h3 className="text-lg font-medium mb-3">Registro</h3>
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nombre *
+              </label>
+              <input
+                type="text"
+                value={signupData.nombre}
+                onChange={(e) => setSignupData({...signupData, nombre: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Nombre completo"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Correo
+              </label>
+              <input
+                type="email"
+                value={signupData.correo}
+                onChange={(e) => setSignupData({...signupData, correo: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="correo@ejemplo.com"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Usuario *
+              </label>
+              <input
+                type="text"
+                value={signupData.usuario}
+                onChange={(e) => setSignupData({...signupData, usuario: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Nombre de usuario"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Teléfono *
+              </label>
+              <input
+                type="text"
+                value={signupData.telefono}
+                onChange={(e) => setSignupData({...signupData, telefono: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="123456789"
+              />
+            </div>
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Dirección *
+              </label>
+              <input
+                type="text"
+                value={signupData.direccion}
+                onChange={(e) => setSignupData({...signupData, direccion: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Dirección completa"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Contraseña *
+              </label>
+              <input
+                type="password"
+                value={signupData.password}
+                onChange={(e) => setSignupData({...signupData, password: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Mínimo 6 caracteres"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Confirmar Contraseña *
+              </label>
+              <input
+                type="password"
+                value={signupData.confirmPassword}
+                onChange={(e) => setSignupData({...signupData, confirmPassword: e.target.value})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Repita la contraseña"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Rol *
+              </label>
+              <select
+                value={signupData.rol}
+                onChange={(e) => setSignupData({...signupData, rol: e.target.value as 'Administrador' | 'ServicioSocial' | 'Albergue'})}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="Administrador">Administrador</option>
+                <option value="ServicioSocial">Servicio Social</option>
+                <option value="Albergue">Albergue</option>
+              </select>
+            </div>
+          </div>
+          <button
+            onClick={handleSignup}
+            disabled={isLoading}
+            className={`px-4 py-2 rounded ${
+              isLoading 
+                ? 'bg-gray-300 cursor-not-allowed' 
+                : 'bg-purple-500 hover:bg-purple-600 text-white'
+            }`}
+          >
+            {isLoading ? 'Procesando...' : 'Registrar Usuario'}
+          </button>
         </div>
       </div>
 
