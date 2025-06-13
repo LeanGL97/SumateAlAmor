@@ -1,10 +1,16 @@
+export enum UserRole {
+  ADMINISTRADOR = 'Administrador',
+  SERVICIO_SOCIAL = 'ServicioSocial',
+  ALBERGUE = 'Albergue'
+}
+
 export interface Usuario {
-  id: number;
+  id: string; // UUID
   nombre: string;
-  usuario: string;
   correo?: string;
-  telefono: string;
+  usuario: string;
   direccion: string;
-  password: string;
-  rol: 'Administrador' | 'ServicioSocial' | 'Albergue';
+  telefono: string;
+  password: string; // Hashed password
+  rol: UserRole;
 }
