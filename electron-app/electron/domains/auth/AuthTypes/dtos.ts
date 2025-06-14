@@ -1,3 +1,8 @@
+/**
+ * Data Transfer Objects for Auth Domain
+ * Defines interfaces for input/output data structures
+ */
+
 export enum UserRole {
   ADMINISTRADOR = 'Administrador',
   SERVICIO_SOCIAL = 'ServicioSocial',
@@ -15,12 +20,22 @@ export interface Usuario {
   rol: UserRole;
 }
 
-export interface LoginRequest {
+export interface UsuarioWithoutPassword {
+  id: string;
+  nombre: string;
+  correo?: string;
+  usuario: string;
+  direccion: string;
+  telefono: string;
+  rol: UserRole;
+}
+
+export interface LoginDTO {
   usuario: string;
   password: string;
 }
 
-export interface SignupRequest {
+export interface SignupDTO {
   nombre: string;
   correo?: string;
   usuario: string;
@@ -31,9 +46,15 @@ export interface SignupRequest {
   confirmPassword: string;
 }
 
-export interface AuthResponse {
+export interface AuthResponseDTO {
   success: boolean;
   message: string;
-  user?: Omit<Usuario, 'password'>;
+  user?: UsuarioWithoutPassword;
   token?: string;
+}
+
+export interface AuthErrorDTO {
+  success: false;
+  message: string;
+  code?: string;
 } 
