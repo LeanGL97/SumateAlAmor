@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import Alumnos from './pages/Alumnos'
+import AlumnoDetallado from './pages/AlumnoDetallado'
 import Pacientes from './pages/Pacientes'
 import GastosYProductos from './pages/GastosYProductos'
 import AdminDashboard from './pages/AdminDashboard'
@@ -14,13 +15,14 @@ import PruebasBack from './pages/PruebasBack'
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen min-w-[640px]">
         <Navbar />
         <main className="flex-grow bg-terciario">
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/home" element={<Home />} />
             <Route path="/alumnos" element={<Alumnos />} />
+            <Route path="/alumnos/:id" element={<AlumnoDetallado />} />
             <Route path="/pacientes" element={<Pacientes />} />
             <Route path="/gyp" element={<GastosYProductos />} />
             <Route path="/adminDashboard" element={<AdminDashboard />} />
