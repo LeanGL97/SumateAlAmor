@@ -45,7 +45,7 @@ const Login = () => {
   };
 
   return (
-    <form className="p-5 w-[70vw] bg-secundario rounded-md flex flex-col items-center justify-center ">
+    <form className="p-5 w-[70%] bg-secundario rounded-md flex flex-col items-center justify-center ">
       <label className="text-2xl cuarto">Usuario</label>
       <input
         type="text"
