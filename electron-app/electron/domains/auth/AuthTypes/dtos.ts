@@ -1,56 +1,36 @@
 /**
  * Data Transfer Objects for Auth Domain
  * Defines interfaces for input/output data structures
+ * Note: Uses User domain types for consistency
  */
 
-export enum UserRole {
-  ADMINISTRADOR = 'Administrador',
-  SERVICIO_SOCIAL = 'ServicioSocial',
-  ALBERGUE = 'Albergue'
-}
+import { UserRoleEnum, UserResponseDTO } from '../../users/UserTypes/dtos.js';
 
-export interface Usuario {
-  id: string; // UUID
-  nombre: string;
-  correo?: string;
-  usuario: string;
-  direccion: string;
-  telefono: string;
-  password: string; // Hashed password
-  rol: UserRole;
-}
-
-export interface UsuarioWithoutPassword {
-  id: string;
-  nombre: string;
-  correo?: string;
-  usuario: string;
-  direccion: string;
-  telefono: string;
-  rol: UserRole;
-}
+// Re-export user types for consistency
+export { UserRoleEnum, UserResponseDTO } from '../../users/UserTypes/dtos.js';
 
 export interface LoginDTO {
-  usuario: string;
+  userName: string;
   password: string;
 }
 
 export interface SignupDTO {
-  nombre: string;
-  correo?: string;
-  usuario: string;
-  direccion: string;
-  telefono: string;
+  fullName: string;
+  mail?: string;
+  userName: string;
+  address: string;
+  phone: string;
   password: string;
-  rol: UserRole;
+  role: UserRoleEnum;
   confirmPassword: string;
 }
 
 export interface AuthResponseDTO {
   success: boolean;
   message: string;
-  user?: UsuarioWithoutPassword;
+  user?: UserResponseDTO;
   token?: string;
+  errors?: Record<string, string>;
 }
 
 export interface AuthErrorDTO {

@@ -3,18 +3,18 @@
  * Orchestrates authentication operations using dependency injection
  */
 
-import { IAuthRepository } from '../AuthRepository/auth.repository.interface.js';
-import { LoginService } from './login.service.js';
-import { SignupService } from './signup.service.js';
+import { IUserRepository } from '../../users/UserRepository/user.repository.interface.js';
+import { LoginService } from './Services/login.service.js';
+import { SignupService } from './Services/signup.service.js';
 import { LoginDTO, SignupDTO, AuthResponseDTO } from '../AuthTypes/dtos.js';
 
 export class AuthService {
   private loginService: LoginService;
   private signupService: SignupService;
 
-  constructor(authRepository: IAuthRepository) {
-    this.loginService = new LoginService(authRepository);
-    this.signupService = new SignupService(authRepository);
+  constructor(userRepository: IUserRepository) {
+    this.loginService = new LoginService(userRepository);
+    this.signupService = new SignupService(userRepository);
   }
 
   /**

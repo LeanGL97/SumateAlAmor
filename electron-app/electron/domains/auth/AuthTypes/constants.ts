@@ -15,12 +15,13 @@ export const USER_ROLES = {
 } as const;
 
 export const AUTH_ERROR_MESSAGES = {
-  INVALID_LOGIN_DATA: 'Datos de login inválidos',
-  INVALID_SIGNUP_DATA: 'Datos de registro inválidos',
-  USER_NOT_FOUND: 'Usuario no encontrado',
-  INVALID_PASSWORD: 'Contraseña incorrecta',
+  INVALID_LOGIN_DATA: 'Datos de login inválidos.',
+  INVALID_SIGNUP_DATA: 'Datos de registro inválidos.',
+  INVALID_CREDENTIALS: 'Usuario o contraseña incorrectos.',
+  USER_NOT_FOUND: 'Usuario no encontrado.',
+  INVALID_PASSWORD: 'Contraseña incorrecta.',
+  PASSWORD_CONFIRMATION_FAILED: 'Las contraseñas no coinciden.',
   USERNAME_EXISTS: 'El nombre de usuario ya existe',
-  PASSWORDS_NOT_MATCH: 'Las contraseñas no coinciden',
   WEAK_PASSWORD: 'La contraseña debe tener al menos 6 caracteres',
   MISSING_REQUIRED_FIELDS: 'Todos los campos obligatorios deben ser completados',
   INTERNAL_SERVER_ERROR: 'Error interno del servidor',

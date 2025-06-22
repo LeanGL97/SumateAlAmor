@@ -1,11 +1,18 @@
 import { ipcMain } from 'electron';
-import { initUsuarioController } from './users/users.controller.js';
-import { initAuthController } from './auth/auth.controller.js';
+import { initUserController } from './users/UserController/user.controller.js';
+import { AuthController } from './auth/AuthController/auth.controller.js';
+import { AUTH_ENDPOINTS } from './auth/AuthTypes/constants.js';
 
 export async function bootstrapBackend(ipc: typeof ipcMain) {
-  // Aquí inicializas tus controladores (como NestJS lo haría)
-  initUsuarioController(ipc);
-  initAuthController(ipc);
-
-  // En el futuro puedes hacer: initPacienteController(ipc), etc.
+  console.log('🚀 Iniciando backend...');
+  
+  // Inicializa los controladores de dominio
+  initUserController(ipc);
+  
+  // Registra los endpoints de autenticación
+  ipc.handle(AUTH_ENDPOINTS.LOGIN, AuthController.login);
+  ipc.handle(AUTH_ENDPOINTS.SIGNUP, AuthController.signup);
+  
+  console.log('✅ Endpoints de autenticación registrados.');
+  console.log('🎉 Backend iniciado correctamente.');
 }

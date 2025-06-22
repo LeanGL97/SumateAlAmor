@@ -1,9 +1,14 @@
 import { useState } from 'react';
 
 interface Usuario {
-  id: number;
-  nombre: string;
-  // Agrega más campos según la estructura de tus usuarios
+  id: string;
+  fullName: string;
+  searchName: string;
+  mail?: string;
+  userName: string;
+  address: string;
+  phone: string;
+  role: 'Administrador' | 'ServicioSocial' | 'Albergue';
 }
 
 interface EndpointResponse {
@@ -14,18 +19,18 @@ interface EndpointResponse {
 }
 
 interface LoginData {
-  usuario: string;
+  userName: string;
   password: string;
 }
 
 interface SignupData {
-  nombre: string;
-  correo?: string;
-  usuario: string;
-  direccion: string;
-  telefono: string;
+  fullName: string;
+  mail?: string;
+  userName: string;
+  address: string;
+  phone: string;
   password: string;
-  rol: 'Administrador' | 'ServicioSocial' | 'Albergue';
+  role: 'Administrador' | 'ServicioSocial' | 'Albergue';
   confirmPassword: string;
 }
 
@@ -35,18 +40,18 @@ const PruebasBack = () => {
   
   // Auth form states
   const [loginData, setLoginData] = useState<LoginData>({
-    usuario: '',
+    userName: '',
     password: ''
   });
   
   const [signupData, setSignupData] = useState<SignupData>({
-    nombre: '',
-    correo: '',
-    usuario: '',
-    direccion: '',
-    telefono: '',
+    fullName: '',
+    mail: '',
+    userName: '',
+    address: '',
+    phone: '',
     password: '',
-    rol: 'Administrador',
+    role: 'Administrador',
     confirmPassword: ''
   });
 
@@ -172,14 +177,19 @@ const PruebasBack = () => {
     }
 
     if (response.endpoint === 'getUsuarios') {
-      const usuarios = response.data as Usuario[];
+      const usuarios = response.data.users as Usuario[];
+
+      if (!Array.isArray(usuarios)) {
+        return <div className="text-red-600">Error: La respuesta no es un array de usuarios.</div>;
+      }
+
       return (
         <div className="space-y-2">
           <h3 className="font-semibold">Usuarios encontrados: {usuarios.length}</h3>
           <ul className="space-y-1">
             {usuarios.map((usuario) => (
               <li key={usuario.id} className="border-b pb-1">
-                {usuario.nombre}
+                {usuario.fullName}
               </li>
             ))}
           </ul>
@@ -254,8 +264,8 @@ const PruebasBack = () => {
               </label>
               <input
                 type="text"
-                value={loginData.usuario}
-                onChange={(e) => setLoginData({...loginData, usuario: e.target.value})}
+                value={loginData.userName}
+                onChange={(e) => setLoginData({...loginData, userName: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Ingrese usuario"
               />
@@ -296,8 +306,8 @@ const PruebasBack = () => {
               </label>
               <input
                 type="text"
-                value={signupData.nombre}
-                onChange={(e) => setSignupData({...signupData, nombre: e.target.value})}
+                value={signupData.fullName}
+                onChange={(e) => setSignupData({...signupData, fullName: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Nombre completo"
               />
@@ -308,8 +318,8 @@ const PruebasBack = () => {
               </label>
               <input
                 type="email"
-                value={signupData.correo}
-                onChange={(e) => setSignupData({...signupData, correo: e.target.value})}
+                value={signupData.mail}
+                onChange={(e) => setSignupData({...signupData, mail: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="correo@ejemplo.com"
               />
@@ -320,8 +330,8 @@ const PruebasBack = () => {
               </label>
               <input
                 type="text"
-                value={signupData.usuario}
-                onChange={(e) => setSignupData({...signupData, usuario: e.target.value})}
+                value={signupData.userName}
+                onChange={(e) => setSignupData({...signupData, userName: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Nombre de usuario"
               />
@@ -332,8 +342,8 @@ const PruebasBack = () => {
               </label>
               <input
                 type="text"
-                value={signupData.telefono}
-                onChange={(e) => setSignupData({...signupData, telefono: e.target.value})}
+                value={signupData.phone}
+                onChange={(e) => setSignupData({...signupData, phone: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="123456789"
               />
@@ -344,8 +354,8 @@ const PruebasBack = () => {
               </label>
               <input
                 type="text"
-                value={signupData.direccion}
-                onChange={(e) => setSignupData({...signupData, direccion: e.target.value})}
+                value={signupData.address}
+                onChange={(e) => setSignupData({...signupData, address: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Dirección completa"
               />
@@ -379,8 +389,8 @@ const PruebasBack = () => {
                 Rol *
               </label>
               <select
-                value={signupData.rol}
-                onChange={(e) => setSignupData({...signupData, rol: e.target.value as 'Administrador' | 'ServicioSocial' | 'Albergue'})}
+                value={signupData.role}
+                onChange={(e) => setSignupData({...signupData, role: e.target.value as 'Administrador' | 'ServicioSocial' | 'Albergue'})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="Administrador">Administrador</option>

@@ -11,21 +11,23 @@ import { AUTH_ERROR_MESSAGES } from '../../AuthTypes/constants.js';
 export class LoginHandler {
   constructor(private authService: AuthService) {}
 
-  async handleLogin(event: Electron.IpcMainInvokeEvent, data: unknown): Promise<AuthResponseDTO> {
+  async handle(data: unknown): Promise<AuthResponseDTO> {
     console.log('📥 Login endpoint llamado con datos:', data);
     
-    // Validate input data
-    if (!validateLoginData(data)) {
-      console.log('❌ Datos de login inválidos');
+    // 1. Validate input data
+    const { isValid, errors } = validateLoginData(data);
+    if (!isValid) {
+      console.log('❌ Datos de login inválidos:', errors);
       return {
         success: false,
-        message: AUTH_ERROR_MESSAGES.INVALID_LOGIN_DATA
+        message: AUTH_ERROR_MESSAGES.INVALID_LOGIN_DATA,
+        errors,
       };
     }
 
     try {
       const loginData = data as LoginDTO;
-      console.log('Login attempt for user:', loginData.usuario);
+      console.log('Login attempt for user:', loginData.userName);
       
       const result = await this.authService.login(loginData);
       console.log('Login result:', result.success ? 'Success' : 'Failed');

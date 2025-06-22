@@ -1,19 +1,16 @@
 /**
  * Auth Domain - Main Module
  * Re-exports all auth domain components for easy importing
+ * Note: User operations are handled by the users domain
  */
 
 // Controller
-export { initAuthController } from './AuthController/auth.controller.js';
+export { AuthController } from './AuthController/auth.controller.js';
 
 // Services
 export { AuthService } from './AuthService/auth.service.js';
-export { LoginService } from './AuthService/login.service.js';
-export { SignupService } from './AuthService/signup.service.js';
-
-// Repository
-export { IAuthRepository } from './AuthRepository/auth.repository.interface.js';
-export { AuthSQLiteRepository } from './AuthRepository/auth.sqlite.repository.js';
+export { LoginService } from './AuthService/Services/login.service.js';
+export { SignupService } from './AuthService/Services/signup.service.js';
 
 // Types and DTOs
 export * from './AuthTypes/dtos.js';
@@ -21,4 +18,4 @@ export * from './AuthTypes/constants.js';
 export * from './AuthTypes/validation.js';
 
 // Container
-export { AuthContainer } from './auth.container.js'; 
+export { authContainer } from './auth.container.js'; 

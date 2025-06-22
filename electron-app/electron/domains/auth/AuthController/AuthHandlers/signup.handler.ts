@@ -11,21 +11,23 @@ import { AUTH_ERROR_MESSAGES } from '../../AuthTypes/constants.js';
 export class SignupHandler {
   constructor(private authService: AuthService) {}
 
-  async handleSignup(event: Electron.IpcMainInvokeEvent, data: unknown): Promise<AuthResponseDTO> {
+  async handle(data: unknown): Promise<AuthResponseDTO> {
     console.log('📥 Signup endpoint llamado con datos:', data);
     
-    // Validate input data
-    if (!validateSignupData(data)) {
-      console.log('❌ Datos de signup inválidos');
+    // 1. Validate input data
+    const { isValid, errors } = validateSignupData(data);
+    if (!isValid) {
+      console.log('❌ Datos de signup inválidos:', errors);
       return {
         success: false,
-        message: AUTH_ERROR_MESSAGES.INVALID_SIGNUP_DATA
+        message: AUTH_ERROR_MESSAGES.INVALID_SIGNUP_DATA,
+        errors,
       };
     }
 
     try {
       const signupData = data as SignupDTO;
-      console.log('Signup attempt for user:', signupData.usuario);
+      console.log('Signup attempt for user:', signupData.userName);
       
       const result = await this.authService.signup(signupData);
       console.log('Signup result:', result.success ? 'Success' : 'Failed');
