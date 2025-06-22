@@ -3,40 +3,42 @@ interface ElectronAPI {
   getUsuarios: () => Promise<any[]>;
   
   // Auth methods
-  login: (loginData: { usuario: string; password: string }) => Promise<{
+  login: (loginData: { userName: string; password: string }) => Promise<{
     success: boolean;
     message: string;
     user?: {
       id: string;
-      nombre: string;
-      correo?: string;
-      usuario: string;
-      direccion: string;
-      telefono: string;
-      rol: 'Administrador' | 'ServicioSocial' | 'Albergue';
+      fullName: string;
+      searchName: string;
+      mail?: string;
+      userName: string;
+      address: string;
+      phone: string;
+      role: 'Administrador' | 'ServicioSocial' | 'Albergue';
     };
   }>;
   
   signup: (signupData: {
-    nombre: string;
-    correo?: string;
-    usuario: string;
-    direccion: string;
-    telefono: string;
+    fullName: string;
+    mail?: string;
+    userName: string;
+    address: string;
+    phone: string;
     password: string;
-    rol: 'Administrador' | 'ServicioSocial' | 'Albergue';
+    role: 'Administrador' | 'ServicioSocial' | 'Albergue';
     confirmPassword: string;
   }) => Promise<{
     success: boolean;
     message: string;
     user?: {
       id: string;
-      nombre: string;
-      correo?: string;
-      usuario: string;
-      direccion: string;
-      telefono: string;
-      rol: 'Administrador' | 'ServicioSocial' | 'Albergue';
+      fullName: string;
+      searchName: string;
+      mail?: string;
+      userName: string;
+      address: string;
+      phone: string;
+      role: 'Administrador' | 'ServicioSocial' | 'Albergue';
     };
   }>;
   

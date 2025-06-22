@@ -3,64 +3,77 @@
  * Handles data validation for login and signup operations
  */
 
-import { LoginDTO, SignupDTO, UserRole } from './dtos.js';
+import { UserRoleEnum } from './dtos.js';
 import { USER_ROLES, PASSWORD_REQUIREMENTS } from './constants.js';
 
-export function isValidUserRole(role: string): role is UserRole {
-  return Object.values(USER_ROLES).includes(role as UserRole);
+export function isValidUserRole(role: string): role is UserRoleEnum {
+  return Object.values(USER_ROLES).includes(role as UserRoleEnum);
 }
 
-export function validateLoginData(data: unknown): data is LoginDTO {
-  if (!data || typeof data !== 'object' || data === null) return false;
-  
+export function validateLoginData(data: unknown): { isValid: boolean; errors: Record<string, string> } {
+  const errors: Record<string, string> = {};
+  if (!data || typeof data !== 'object' || data === null) {
+    errors.general = 'Datos de login inválidos.';
+    return { isValid: false, errors };
+  }
+
   const d = data as Record<string, unknown>;
-  
-  return typeof d.usuario === 'string' && 
-         typeof d.password === 'string' &&
-         d.usuario.trim() !== '' &&
-         d.password.trim() !== '';
+
+  if (!d.userName || typeof d.userName !== 'string' || d.userName.trim() === '') {
+    errors.userName = 'El nombre de usuario es requerido.';
+  }
+  if (!d.password || typeof d.password !== 'string' || d.password.trim() === '') {
+    errors.password = 'La contraseña es requerida.';
+  }
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+  };
 }
 
-export function validateSignupData(data: unknown): data is SignupDTO {
-  if (!data || typeof data !== 'object' || data === null) return false;
-  
+export function validateSignupData(data: unknown): { isValid: boolean; errors: Record<string, string> } {
+  const errors: Record<string, string> = {};
+  if (!data || typeof data !== 'object' || data === null) {
+    errors.general = 'Datos de registro inválidos.';
+    return { isValid: false, errors };
+  }
+
   const d = data as Record<string, unknown>;
+
+  // Check required fields & non-empty strings
+  if (!d.fullName || typeof d.fullName !== 'string' || d.fullName.trim() === '') {
+    errors.fullName = "El campo 'Nombre' es requerido.";
+  }
+  if (!d.userName || typeof d.userName !== 'string' || d.userName.trim() === '') {
+    errors.userName = "El campo 'Usuario' es requerido.";
+  }
+  if (!d.address || typeof d.address !== 'string' || d.address.trim() === '') {
+    errors.address = "El campo 'Dirección' es requerido.";
+  }
+  if (!d.phone || typeof d.phone !== 'string' || d.phone.trim() === '') {
+    errors.phone = "El campo 'Teléfono' es requerido.";
+  }
+  if (!d.role || typeof d.role !== 'string' || !isValidUserRole(d.role)) {
+    errors.role = "El 'Rol' seleccionado no es válido.";
+  }
+
+  // Validate password
+  if (!d.password || typeof d.password !== 'string') {
+    errors.password = "El campo 'Contraseña' es requerido.";
+  } else {
+    if (d.password.length < PASSWORD_REQUIREMENTS.MIN_LENGTH) {
+      errors.password = `La contraseña debe tener al menos ${PASSWORD_REQUIREMENTS.MIN_LENGTH} caracteres.`;
+    }
+    if (d.password !== d.confirmPassword) {
+      errors.confirmPassword = "Las contraseñas no coinciden.";
+    }
+  }
   
-  // Check required fields
-  if (typeof d.nombre !== 'string' ||
-      typeof d.usuario !== 'string' ||
-      typeof d.direccion !== 'string' ||
-      typeof d.telefono !== 'string' ||
-      typeof d.password !== 'string' ||
-      typeof d.confirmPassword !== 'string' ||
-      typeof d.rol !== 'string') {
-    return false;
-  }
-
-  // Check non-empty strings
-  if (d.nombre.trim() === '' ||
-      d.usuario.trim() === '' ||
-      d.direccion.trim() === '' ||
-      d.telefono.trim() === '') {
-    return false;
-  }
-
-  // Validate role
-  if (!isValidUserRole(d.rol)) {
-    return false;
-  }
-
-  // Validate password strength
-  if (d.password.length < PASSWORD_REQUIREMENTS.MIN_LENGTH) {
-    return false;
-  }
-
-  // Validate password confirmation
-  if (d.password !== d.confirmPassword) {
-    return false;
-  }
-
-  return true;
+  return {
+    isValid: Object.keys(errors).length === 0,
+    errors,
+  };
 }
 
 export function validatePasswordStrength(password: string): boolean {

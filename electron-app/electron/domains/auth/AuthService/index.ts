@@ -3,6 +3,6 @@
  */
 
 export * from './auth.service.js';
-export * from './login.service.js';
-export * from './signup.service.js';
+export * from './Services/login.service.js';
+export * from './Services/signup.service.js';
 export * from './auth.utils.js'; 

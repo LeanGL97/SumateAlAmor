@@ -1,18 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bootstrapBackend = bootstrapBackend;
-const users_controller_js_1 = require("./users/users.controller.js");
-const auth_controller_js_1 = require("./auth/auth.controller.js");
+const user_controller_js_1 = require("./users/UserController/user.controller.js");
+const auth_controller_js_1 = require("./auth/AuthController/auth.controller.js");
+const constants_js_1 = require("./auth/AuthTypes/constants.js");
 async function bootstrapBackend(ipc) {
-    console.log('🚀 Iniciando bootstrap del backend...');
-    // Aquí inicializas tus controladores (como NestJS lo haría)
-    console.log('📋 Inicializando controlador de usuarios...');
-    (0, users_controller_js_1.initUsuarioController)(ipc);
-    console.log('✅ Controlador de usuarios inicializado');
-    console.log('📋 Inicializando controlador de autenticación...');
-    (0, auth_controller_js_1.initAuthController)(ipc);
-    console.log('✅ Controlador de autenticación inicializado');
-    console.log('🎉 Bootstrap del backend completado');
-    // En el futuro puedes hacer: initPacienteController(ipc), etc.
+    console.log('🚀 Iniciando backend...');
+    // Inicializa los controladores de dominio
+    (0, user_controller_js_1.initUserController)(ipc);
+    // Registra los endpoints de autenticación
+    ipc.handle(constants_js_1.AUTH_ENDPOINTS.LOGIN, auth_controller_js_1.AuthController.login);
+    ipc.handle(constants_js_1.AUTH_ENDPOINTS.SIGNUP, auth_controller_js_1.AuthController.signup);
+    console.log('✅ Endpoints de autenticación registrados.');
+    console.log('🎉 Backend iniciado correctamente.');
 }
 //# sourceMappingURL=index.js.map

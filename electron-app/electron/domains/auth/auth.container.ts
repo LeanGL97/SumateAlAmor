@@ -1,49 +1,30 @@
 /**
  * Auth Dependency Container
  * Centralizes dependency injection for the auth domain
+ * Note: Uses UserRepository from users domain for all user operations
  */
 
 import { AuthService } from './AuthService/auth.service.js';
-import { AuthSQLiteRepository } from './AuthRepository/auth.sqlite.repository.js';
+import { UserSQLiteRepository } from '../users/UserRepository/user.sqlite.repository.js';
 import { LoginHandler } from './AuthController/AuthHandlers/login.handler.js';
 import { SignupHandler } from './AuthController/AuthHandlers/signup.handler.js';
+import { IUserRepository } from '../users/UserRepository/user.repository.interface.js';
 
-export class AuthContainer {
-  private static instance: AuthContainer;
-  private authRepository!: AuthSQLiteRepository;
+class AuthContainer {
+  private userRepository!: IUserRepository;
   private authService!: AuthService;
   private loginHandler!: LoginHandler;
   private signupHandler!: SignupHandler;
 
-  private constructor() {
+  constructor() {
     this.initializeDependencies();
   }
 
-  public static getInstance(): AuthContainer {
-    if (!AuthContainer.instance) {
-      AuthContainer.instance = new AuthContainer();
-    }
-    return AuthContainer.instance;
-  }
-
   private initializeDependencies(): void {
-    // Initialize repository
-    this.authRepository = new AuthSQLiteRepository();
-    
-    // Initialize service with repository injection
-    this.authService = new AuthService(this.authRepository);
-    
-    // Initialize handlers with service injection
+    this.userRepository = new UserSQLiteRepository();
+    this.authService = new AuthService(this.userRepository);
     this.loginHandler = new LoginHandler(this.authService);
     this.signupHandler = new SignupHandler(this.authService);
-  }
-
-  public getAuthRepository(): AuthSQLiteRepository {
-    return this.authRepository;
-  }
-
-  public getAuthService(): AuthService {
-    return this.authService;
   }
 
   public getLoginHandler(): LoginHandler {
@@ -53,4 +34,7 @@ export class AuthContainer {
   public getSignupHandler(): SignupHandler {
     return this.signupHandler;
   }
-} 
+}
+
+// Create and export a single instance
+export const authContainer = new AuthContainer(); 

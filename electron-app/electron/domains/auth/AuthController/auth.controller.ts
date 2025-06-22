@@ -3,23 +3,24 @@
  * Main controller that initializes handlers and registers IPC endpoints
  */
 
-import { ipcMain } from 'electron';
-import { AuthContainer } from '../auth.container.js';
-import { AUTH_ENDPOINTS } from '../AuthTypes/constants.js';
+import { IpcMainInvokeEvent } from 'electron';
+import { LoginDTO, SignupDTO, AuthResponseDTO } from '../AuthTypes/dtos.js';
+import { authContainer } from '../auth.container.js';
 
-export function initAuthController(ipc: typeof ipcMain = ipcMain) {
-  console.log('🔐 Inicializando controlador de autenticación...');
-  
-  // Get dependencies from container
-  const container = AuthContainer.getInstance();
-  const loginHandler = container.getLoginHandler();
-  const signupHandler = container.getSignupHandler();
-  
-  console.log('✅ Servicio de autenticación creado');
+export class AuthController {
+  static async login(
+    _event: IpcMainInvokeEvent,
+    loginData: LoginDTO,
+  ): Promise<AuthResponseDTO> {
+    const handler = authContainer.getLoginHandler();
+    return handler.handle(loginData);
+  }
 
-  // Register IPC endpoints
-  ipc.handle(AUTH_ENDPOINTS.LOGIN, (event, data) => loginHandler.handleLogin(event, data));
-  ipc.handle(AUTH_ENDPOINTS.SIGNUP, (event, data) => signupHandler.handleSignup(event, data));
-
-  console.log('✅ Endpoints de autenticación registrados: auth:login, auth:signup');
+  static async signup(
+    _event: IpcMainInvokeEvent,
+    signupData: SignupDTO,
+  ): Promise<AuthResponseDTO> {
+    const handler = authContainer.getSignupHandler();
+    return handler.handle(signupData);
+  }
 } 

@@ -3,21 +3,21 @@ import { contextBridge, ipcRenderer } from 'electron';
 contextBridge.exposeInMainWorld('api', {
   ping: () => ipcRenderer.invoke('ping'),
 
-  // Ejemplo: Llamada para obtener todos los usuarios
-  getUsuarios: () => ipcRenderer.invoke('usuarios:getAll'),
+  // User methods - using correct endpoint names from backend
+  getUsuarios: () => ipcRenderer.invoke('users:getAll'),
 
   // Auth methods
-  login: (loginData: { usuario: string; password: string }) => 
+  login: (loginData: { userName: string; password: string }) => 
     ipcRenderer.invoke('auth:login', loginData),
   
   signup: (signupData: {
-    nombre: string;
-    correo?: string;
-    usuario: string;
-    direccion: string;
-    telefono: string;
+    fullName: string;
+    mail?: string;
+    userName: string;
+    address: string;
+    phone: string;
     password: string;
-    rol: 'Administrador' | 'ServicioSocial' | 'Albergue';
+    role: 'Administrador' | 'ServicioSocial' | 'Albergue';
     confirmPassword: string;
   }) => ipcRenderer.invoke('auth:signup', signupData),
 
