@@ -32,6 +32,12 @@ export enum ServiceDurationEnum {
   SEIS_MESES = "Seis Meses",
 }
 
+export enum ServiceStatusEnum {
+  ACTIVO = "Activo",
+  INACTIVO = "Inactivo",
+  COMPLETADO = "Completado",
+}
+
 export type StudentType = {
   id: string;
   fullName: string;
@@ -58,6 +64,7 @@ export type StudentType = {
   serviceStartDate: Date;
   serviceDuration: ServiceDurationEnum;
   serviceEndDate?: Date;
+  serviceStatus: ServiceStatusEnum;
   ActivitiesStartTime?: Date;
   ActivitiesEndTime?: Date;
   donationDate?: Date;
@@ -69,23 +76,22 @@ export type StudentType = {
 // Paciente
 
 export enum GenderEnum {
-  male = "Hombre",
-  female = "Mujer",
+  HOMBRE = "Hombre",
+  MUJER = "Mujer",
 }
 
 export enum PatientStatusEnum {
-  active = "Activo",
-  suspended = "Suspendido",
-  inactive = "Inactivo",
-  remission = "Remisión",
-  deceased = "Fallecido",
-  uniqueSupport = "Único Apoyo",
+  ACTIVO = "Activo",
+  SUSPENDIDO = "Suspendido",
+  REMISION = "Remisión",
+  FALLECIDO = "Fallecido",
+  UNICO_APOYO = "Único Apoyo",
 }
 
 export enum DiagnosisEnum {
-  leucemia = "Leucemia",
-  linfoma = "Linfoma",
-  otro = "Otro", // Deja el campo abierto para personalización
+  LEUCEMIA = "Leucemia",
+  LINFOMA = "Linfoma",
+  OTRO = "Otro",
 }
 
 export type PatientType = {
@@ -93,7 +99,7 @@ export type PatientType = {
   fileNumber: string;
   fullName: string;
   gender: GenderEnum;
-  birthDate?: Date;
+  birthdate?: Date;
   age?: number;
   state?: string;
   city?: string;
@@ -102,12 +108,12 @@ export type PatientType = {
   hospital?: HospitalType;
   diagnosis?: DiagnosisEnum;
   diagnosisNotes?: string;
-  contact1Name?: string;
-  contact1Relation?: string;
-  contact1Phone?: string;
-  contact2Name?: string;
-  contact2Relation?: string;
-  contact2Phone?: string;
+  firstContactName?: string;
+  firstContactRelation?: string;
+  firstContactPhone?: string;
+  secoundContactName?: string;
+  secoundContactRelation?: string;
+  secoundContactPhone?: string;
   status: PatientStatusEnum;
   registrationDate?: Date;
   family?: FamilyMemberType[];
@@ -119,12 +125,12 @@ export type PatientType = {
 // Familiar
 
 export enum FamilyRelationEnum {
-  mother = "Madre",
-  father = "Padre",
-  sibling = "Hermano/a",
-  grandparent = "Abuelo/a",
-  uncle = "Tío/tía",
-  other = "Otro",
+  MADRE = "Madre",
+  PADRE = "Padre",
+  HERMANO = "Hermano",
+  ABUELO = "Abuelo",
+  TIO = "Tío",
+  OTRO = "Otro",
 }
 
 export type FamilyMemberType = {
@@ -132,8 +138,8 @@ export type FamilyMemberType = {
   patient: PatientType;
   name: string;
   relation: FamilyRelationEnum;
-  birthDate: Date;
-  age?: number;
+  birthdate: Date;
+  age: number;
   gender: GenderEnum;
   education?: string;
   occupation?: string;
@@ -199,10 +205,10 @@ export type CalendarMonthType = {
 export type ReceiptType = {
   id: string;
   patient: PatientType;
-  receiptDate?: Date;
-  provider?: string;
+  date?: Date;
+  provider?: string; // no se ve en el front
   sections: ReceiptSectionType[];
-  totalPrice: number;
+  totalAmount: number;
   notes?: string;
 };
 
@@ -212,6 +218,7 @@ export type ReceiptSectionType = {
   id: string;
   quantity: number;
   product: ProductType;
+  receipt: ReceiptType;
   unitPrice: number;
   totalPrice: number;
 };
@@ -219,12 +226,12 @@ export type ReceiptSectionType = {
 // Producto
 
 export enum ProductCategoryEnum {
-  medicine = "Medicamento",
-  studies = "Estudios",
-  hospital = "Hospital",
-  funeral = "Funeral",
-  transplant = "Trasplante",
-  other = "Otro",
+  MEDICAMENTO = "Medicamento",
+  ESTUDIOS = "Estudios",
+  HOSPITAL = "Hospital",
+  FUNERAL = "Funeral",
+  TRASPLANTE = "Trasplante",
+  OTRO = "Otro",
 }
 
 export type ProductType = {
