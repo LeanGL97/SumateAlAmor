@@ -65,4 +65,18 @@ export interface UserResponseDTO {
 
 export interface UsersListResponseDTO {
   users: UserResponseDTO[];
+}
+
+export interface UserResponseWrapperDTO {
+  success: boolean;
+  message?: string;
+  user?: UserResponseDTO;
+  errors?: Record<string, string>;
+}
+
+export interface UsersListResponseWrapperDTO {
+  success: boolean;
+  message?: string;
+  users?: UserResponseDTO[];
+  errors?: Record<string, string>;
 } 

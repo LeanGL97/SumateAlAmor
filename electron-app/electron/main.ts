@@ -1,6 +1,6 @@
 import { app, BrowserWindow, Menu, ipcMain } from 'electron'
 import * as path from 'path';
-import { bootstrapBackend } from './domains/index.js';
+import { bootstrapBackend } from './main/backend.js';
 import { initializeDatabase } from './db/database.js';
 
 let mainWindow: BrowserWindow | null = null;
