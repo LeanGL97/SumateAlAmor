@@ -35,7 +35,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const path = __importStar(require("path"));
-const index_js_1 = require("./domains/index.js");
+const backend_js_1 = require("./main/backend.js");
 const database_js_1 = require("./db/database.js");
 let mainWindow = null;
 async function createWindow() {
@@ -86,7 +86,7 @@ async function createWindow() {
         const menu = electron_1.Menu.buildFromTemplate(template);
         electron_1.Menu.setApplicationMenu(menu);
         // ⬇️ Inicializa el backend (tu "Nest-like")
-        await (0, index_js_1.bootstrapBackend)(electron_1.ipcMain);
+        await (0, backend_js_1.bootstrapBackend)(electron_1.ipcMain);
     }
     catch (error) {
         console.error('Error al inicializar la aplicación:', error);
