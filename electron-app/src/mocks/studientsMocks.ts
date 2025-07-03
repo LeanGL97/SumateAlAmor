@@ -1,6 +1,7 @@
 import {
   CalendarStatusEnum,
   ServiceDurationEnum,
+  ServiceStatusEnum,
   SocialServiceTypeEnum,
   StudentType,
 } from "@/types/types";
@@ -26,6 +27,7 @@ const studentsMock: StudentType[] = [
     serviceStartDate: new Date("2025-06-01"),
     serviceDuration: ServiceDurationEnum.CUATRO_MESES,
     serviceEndDate: new Date("2025-09-30"),
+    serviceStatus: ServiceStatusEnum.ACTIVO,
     ActivitiesStartTime: new Date("2025-06-01T08:00:00"),
     ActivitiesEndTime: new Date("2025-06-01T12:00:00"),
     documents: [],
@@ -48,6 +50,7 @@ const studentsMock: StudentType[] = [
     serviceStartDate: new Date("2025-06-01"),
     serviceDuration: ServiceDurationEnum.SEIS_MESES,
     serviceEndDate: new Date("2025-11-30"),
+    serviceStatus: ServiceStatusEnum.ACTIVO,
     calendar: {
       id: "fb1710b1-b33d-40a4-81a6-14901c23a65b",
       year: 2025,
@@ -76,6 +79,7 @@ const studentsMock: StudentType[] = [
     serviceStartDate: new Date("2025-06-01"),
     serviceDuration: ServiceDurationEnum.SEIS_MESES,
     serviceEndDate: new Date("2025-11-30"),
+    serviceStatus: ServiceStatusEnum.ACTIVO,
     donationDate: new Date("2025-06-01"),
     donationAmount: 1500,
     documents: [],
@@ -98,11 +102,12 @@ const studentsMock: StudentType[] = [
     serviceType: SocialServiceTypeEnum.PRESENCIAL,
     serviceStartDate: new Date("2025-07-01"),
     serviceDuration: ServiceDurationEnum.CUATRO_MESES,
-    serviceEndDate: undefined,
+    serviceStatus: ServiceStatusEnum.INACTIVO,
     ActivitiesStartTime: new Date("2025-07-01T09:00:00"),
     ActivitiesEndTime: new Date("2025-07-01T13:00:00"),
     documents: [],
   },
 ];
+
 
 export default studentsMock;

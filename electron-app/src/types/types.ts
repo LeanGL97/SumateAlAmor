@@ -70,7 +70,6 @@ export type StudentType = {
   donationDate?: Date;
   donationAmount?: number;
   documents?: DocumentType[];
-  // image?: string | null
 };
 
 // Paciente
