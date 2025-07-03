@@ -17,7 +17,7 @@ function App() {
     <Router>
       <div className="flex flex-col min-h-screen min-w-[640px]">
         <Navbar />
-        <main className="flex-grow bg-terciario">
+        <main className="flex flex-col flex-grow bg-terciario">
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/home" element={<Home />} />
